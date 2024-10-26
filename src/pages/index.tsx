@@ -6,15 +6,13 @@ import Button from "@cloudscape-design/components/button";
 import CodeView from "@cloudscape-design/code-view/code-view";
 import Form from "@cloudscape-design/components/form";
 import Avatar from "@cloudscape-design/chat-components/avatar";
-import LoadingBar from "@cloudscape-design/chat-components/loading-bar";
-import LiveRegion from "@cloudscape-design/components/live-region";
-import Box from "@cloudscape-design/components/box";
 import { useCompletion } from "ai/react";
 
 export default function Home() {
   const { completion, input, setInput, handleSubmit, isLoading, error, stop } =
     useCompletion({
       api: "/api/hello",
+      streamProtocol: 'data',
     });
 
   return (
@@ -22,27 +20,15 @@ export default function Home() {
       <Header variant="h1">AI example</Header>
 
       <Container>
-        {isLoading ? (
-          <LiveRegion>
-            <Box
-              margin={{ bottom: "xs", left: "l" }}
-              color="text-body-secondary"
-            >
-              Generating a response
-            </Box>
-            <LoadingBar variant="gen-ai" />
-          </LiveRegion>
-        ) : (
-          <SpaceBetween size="m" direction="horizontal">
-            <Avatar
-              ariaLabel="Avatar of generative AI assistant"
-              color="gen-ai"
-              iconName="gen-ai"
-              tooltipText="Generative AI assistant"
-            />
-            <CodeView content={completion} />
-          </SpaceBetween>
-        )}
+        <SpaceBetween size="m" direction="horizontal">
+          <Avatar
+            ariaLabel="Avatar of generative AI assistant"
+            color="gen-ai"
+            iconName="gen-ai"
+            tooltipText="Generative AI assistant"
+          />
+          <CodeView content={completion} />
+        </SpaceBetween>
       </Container>
 
       <form onSubmit={handleSubmit}>
