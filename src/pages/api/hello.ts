@@ -1,13 +1,36 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAIStream, Message, StreamingTextResponse } from "ai";
 
-type Data = {
-  name: string;
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
+const buildGoogleGenAIPrompt = (messages: Message[]) => ({
+  contents: messages
+    .filter(
+      (message) => message.role === "user" || message.role === "assistant",
+    )
+    .map((message) => ({
+      role: message.role === "user" ? "user" : "model",
+      parts: [{ text: message.content }],
+    })),
+});
+
+export const config = {
+  runtime: "edge",
 };
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>,
-) {
-  res.status(200).json({ name: "John Doe" });
+export default async function handler(req: Request) {
+  if (req.body === null) {
+    return new Error("request body nullish");
+  }
+
+  const { prompt } = await req.json();
+  const messages: Array<Message> = [
+    { id: new Date().toString(), role: "user", content: prompt },
+  ];
+
+  const geminiStream = await genAI
+    .getGenerativeModel({ model: "gemini-pro" })
+    .generateContentStream(buildGoogleGenAIPrompt(messages));
+  const stream = GoogleGenerativeAIStream(geminiStream);
+
+  return new StreamingTextResponse(stream);
 }
