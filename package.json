@@ -9,19 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudscape-design/chat-components": "^1.0.14",
+    "@cloudscape-design/code-view": "^3.0.31",
+    "@cloudscape-design/components": "^3.0.805",
+    "@cloudscape-design/global-styles": "^1.0.32",
+    "@google/generative-ai": "^0.21.0",
+    "@opentelemetry/api": "^1.9.0",
+    "ai": "^3.4.20",
+    "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.1"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.1"
+    "typescript": "^5"
   }
 }
